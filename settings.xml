@@ -84,5 +84,5 @@
     <!--        <activeProfile>MyProfile</activeProfile>-->
     <!--        <activeProfile>MyProfile2</activeProfile>-->
     <!--    </activeProfiles>-->
-    <localRepository>C:\Program Files\Java\apache-maven-3.6.3\repository</localRepository>
+<!--    <localRepository>C:\Program Files\Java\apache-maven-3.6.3\repository</localRepository>-->
 </settings>
