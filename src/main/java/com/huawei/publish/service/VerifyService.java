@@ -1,7 +1,6 @@
 package com.huawei.publish.service;
 
 import com.huawei.publish.model.PublishPO;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
 import java.io.IOException;
