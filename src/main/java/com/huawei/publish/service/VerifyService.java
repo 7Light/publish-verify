@@ -7,7 +7,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-@Slf4j
 public class VerifyService {
     private String gpgKeyUrl;
     private String keyFileName;
@@ -39,7 +38,7 @@ public class VerifyService {
         exec.waitFor();
         String output = getExecOutput(exec);
         // TODO log.debug
-        log.info(cmd + ":" + output);
+//        log.info(cmd + ":" + output);
         return output;
     }
 
@@ -51,7 +50,7 @@ public class VerifyService {
             }
             return execCmd("rpm -K " + filePath).contains("digests signatures OK");
         } catch (Exception e) {
-            log.error(e.getMessage());
+//            log.error(e.getMessage());
         }
         return false;
     }
@@ -60,7 +59,7 @@ public class VerifyService {
         try {
             return execCmd("sha256sum " + filePath).contains(sha256);
         } catch (Exception e) {
-            log.error(e.getMessage());
+//            log.error(e.getMessage());
         }
         return false;
     }
@@ -73,7 +72,7 @@ public class VerifyService {
             }
             return execCmd("gpg --verify " + filePath).contains("Primary key fingerprint");
         } catch (Exception e) {
-            log.error("rpm verify error,file:{}, error:{}", filePath, e.getMessage());
+//            log.error("rpm verify error,file:{}, error:{}", filePath, e.getMessage());
         }
         return false;
     }
@@ -91,7 +90,7 @@ public class VerifyService {
                 sb.append(line);
             }
         } catch (IOException e) {
-            log.error(e.getMessage());
+//            log.error(e.getMessage());
         }
         return sb + "";
     }
