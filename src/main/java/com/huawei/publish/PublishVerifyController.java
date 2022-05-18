@@ -18,13 +18,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RequestMapping(path = "/", produces = {"application/json"}, consumes = {"application/json"})
+@RequestMapping(path = "/publish", produces = {"application/json"}, consumes = {"application/json"})
 @RestController
 public class PublishVerifyController {
 
     @Autowired
     private FileDownloadService fileDownloadService;
     private VerifyService verifyService;
+
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public Map<String, Object> test() {
+        Map<String, Object> result = new HashMap<>();
+        result.put("result", "success");
+        return result;
+    }
 
     @RequestMapping(value = "/publish", method = RequestMethod.POST)
     public Map<String, Object> publish(@RequestBody PublishPO publishPO) {
