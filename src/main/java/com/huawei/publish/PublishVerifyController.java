@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RequestMapping(path = "/publish", produces = {"application/json"}, consumes = {"application/json"})
+@RequestMapping(path = "/publish")
 @RestController
 public class PublishVerifyController {
 
