@@ -44,14 +44,6 @@ public class PublishPO {
         this.tempDir = tempDir;
     }
 
-    public String getPublishDir() {
-        return publishDir;
-    }
-
-    public void setPublishDir(String publishDir) {
-        this.publishDir = publishDir;
-    }
-
     public List<FilePO> getFiles() {
         return files;
     }
@@ -65,6 +57,5 @@ public class PublishPO {
     private String rpmKey;
     private String fileKey;
     private String tempDir;
-    private String publishDir;
     List<FilePO> files;
 }

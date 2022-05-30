@@ -21,7 +21,6 @@ import java.util.Map;
 @RequestMapping(path = "/publish")
 @RestController
 public class PublishVerifyController {
-
     @Autowired
     private FileDownloadService fileDownloadService;
     private VerifyService verifyService;
@@ -45,7 +44,6 @@ public class PublishVerifyController {
         verifyService = new VerifyService(publishPO);
         List<FilePO> files = publishPO.getFiles();
         String tempDirPath = publishPO.getTempDir();
-        String publishDirPath = publishPO.getPublishDir();
         try {
             File tempDir = new File(tempDirPath);
             if (!tempDir.exists()) {
@@ -61,15 +59,19 @@ public class PublishVerifyController {
                     return result;
                 }
             }
-            File publishDir = new File(publishDirPath);
-            if (!publishDir.exists()) {
-                verifyService.execCmd("mkdir " + publishDirPath);
-            }
+
             for (FilePO file : files) {
                 String fileName = file.getName();
-                verifyService.execCmd("mv " + tempDirPath + fileName + " " + publishDirPath + fileName);
+                File targetPathDir = new File(file.getTargetPath());
+                if (!targetPathDir.exists()) {
+                    targetPathDir.mkdirs();
+                }
+                verifyService.execCmd("mv " + tempDirPath + "/" + fileName + " " + file.getTargetPath() + "/" + fileName);
             }
+
             verifyService.execCmd("rm -rf " + tempDirPath);
+
+            //TODO 更新repo源
         } catch (IOException | InterruptedException e) {
             result.put("result", "fail");
             result.put("message", "publish failed, " + e.getMessage());
@@ -85,12 +87,12 @@ public class PublishVerifyController {
                 return fileName + " checksum check failed.";
             }
         }
-        if (fileName.endsWith(".sha256sum")) {
+        if ("asc".equals(file.getVerifyType())) {
             if (!verifyService.fileVerify(tempDirPath + fileName)) {
                 return fileName + " digests signatures not OK.";
             }
         }
-        if (fileName.endsWith(".rpm")) {
+        if ("rpm".equals(file.getVerifyType())) {
             if (!verifyService.rpmVerify(tempDirPath + fileName)) {
                 return fileName + " digests signatures not OK.";
             }
@@ -99,9 +101,6 @@ public class PublishVerifyController {
     }
 
     private String validate(PublishPO publishPO) {
-        if (StringUtils.isEmpty(publishPO.getTempDir()) || StringUtils.isEmpty(publishPO.getPublishDir())) {
-            return "publish dir cannot be blank.";
-        }
         if (StringUtils.isEmpty(publishPO.getGpgKeyUrl())) {
             return "key url cannot be blank.";
         }
@@ -111,7 +110,10 @@ public class PublishVerifyController {
         }
 
         for (FilePO file : publishPO.getFiles()) {
-            File targetFile = new File(publishPO.getPublishDir() + file.getName());
+            if (StringUtils.isEmpty(file.getTargetPath())) {
+                return "file target path can not be empty.";
+            }
+            File targetFile = new File(file.getTargetPath() + "/" + file.getName());
             if (targetFile.exists()) {
                 return file.getName() + " already published.";
             }

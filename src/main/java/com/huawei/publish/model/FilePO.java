@@ -4,7 +4,30 @@ package com.huawei.publish.model;
 public class FilePO {
     private String name;
     private String size;
-    private String Date;
+    private String parentDir = "";
+    private String url;
+    private String sha256;
+
+    public String getTargetPath() {
+        return targetPath;
+    }
+
+    public void setTargetPath(String targetPath) {
+        this.targetPath = targetPath;
+    }
+
+    private String targetPath;
+
+    public String getVerifyType() {
+        return verifyType;
+    }
+
+    public void setVerifyType(String verifyType) {
+        this.verifyType = verifyType;
+    }
+
+    private String verifyType = "";
+
 
     public String getName() {
         return name;
@@ -20,14 +43,6 @@ public class FilePO {
 
     public void setSize(String size) {
         this.size = size;
-    }
-
-    public String getDate() {
-        return Date;
-    }
-
-    public void setDate(String date) {
-        Date = date;
     }
 
     public String getParentDir() {
@@ -53,8 +68,4 @@ public class FilePO {
     public void setSha256(String sha256) {
         this.sha256 = sha256;
     }
-
-    private String parentDir = "";
-    private String url;
-    private String sha256;
 }
