@@ -74,7 +74,7 @@ public class PublishVerifyController {
 
             RepoIndex repoIndex = publishPO.getRepoIndex();
             if (repoIndex != null) {
-                if ("createrepo.".equals(repoIndex.getIndexType())) {
+                if ("createrepo".equals(repoIndex.getIndexType())) {
                     verifyService.execCmd("createrepo -d " + repoIndex.getRepoPath());
                 }
             }

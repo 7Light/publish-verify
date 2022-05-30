@@ -34,12 +34,13 @@ public class VerifyService {
 //    public static final String RPM_KEY = "gpg-pubkey-f4a80eb5-53a7ff4b";
 
     public String execCmd(String cmd) throws IOException, InterruptedException {
+        log.info("cmd:" + cmd);
         Runtime runtime = Runtime.getRuntime();
         Process exec = runtime.exec(cmd);
         exec.waitFor();
         String output = getExecOutput(exec);
         // TODO log.debug
-        log.info(cmd + ":" + output);
+        log.info("output:" + output);
         return output;
     }
 
