@@ -2,6 +2,7 @@ package com.huawei.publish;
 
 import com.huawei.publish.model.FilePO;
 import com.huawei.publish.model.PublishPO;
+import com.huawei.publish.model.RepoIndex;
 import com.huawei.publish.service.FileDownloadService;
 import com.huawei.publish.service.VerifyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +72,12 @@ public class PublishVerifyController {
 
             verifyService.execCmd("rm -rf " + tempDirPath);
 
-            //TODO 更新repo源
+            RepoIndex repoIndex = publishPO.getRepoIndex();
+            if (repoIndex != null) {
+                if ("createrepo.".equals(repoIndex.getIndexType())) {
+                    verifyService.execCmd("createrepo -d " + repoIndex.getRepoPath());
+                }
+            }
         } catch (IOException | InterruptedException e) {
             result.put("result", "fail");
             result.put("message", "publish failed, " + e.getMessage());

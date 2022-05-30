@@ -4,6 +4,13 @@ import java.util.List;
 
 
 public class PublishPO {
+    private String gpgKeyUrl;
+    private String keyFileName;
+    private String rpmKey;
+    private String fileKey;
+    private String tempDir;
+    List<FilePO> files;
+    private RepoIndex repoIndex;
     public String getGpgKeyUrl() {
         return gpgKeyUrl;
     }
@@ -52,10 +59,11 @@ public class PublishPO {
         this.files = files;
     }
 
-    private String gpgKeyUrl;
-    private String keyFileName;
-    private String rpmKey;
-    private String fileKey;
-    private String tempDir;
-    List<FilePO> files;
+    public RepoIndex getRepoIndex() {
+        return repoIndex;
+    }
+
+    public void setRepoIndex(RepoIndex repoIndex) {
+        this.repoIndex = repoIndex;
+    }
 }
