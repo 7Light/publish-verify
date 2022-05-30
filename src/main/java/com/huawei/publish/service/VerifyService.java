@@ -50,7 +50,8 @@ public class VerifyService {
                 execCmd("wget " + gpgKeyUrl);
                 execCmd("rpm --import " + keyFileName);
             }
-            return execCmd("rpm -K " + filePath).contains("digests signatures OK");
+            String output = execCmd("rpm -K " + filePath);
+            return output.contains("OK") && !output.contains("not");
         } catch (Exception e) {
             log.error(e.getMessage());
         }
