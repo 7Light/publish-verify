@@ -10,7 +10,7 @@ public class PublishPO {
     private String fileKey;
     private String tempDir;
     List<FilePO> files;
-    private RepoIndex repoIndex;
+    private List<RepoIndex> repoIndexList;
     public String getGpgKeyUrl() {
         return gpgKeyUrl;
     }
@@ -59,11 +59,11 @@ public class PublishPO {
         this.files = files;
     }
 
-    public RepoIndex getRepoIndex() {
-        return repoIndex;
+    public List<RepoIndex> getRepoIndexList() {
+        return repoIndexList;
     }
 
-    public void setRepoIndex(RepoIndex repoIndex) {
-        this.repoIndex = repoIndex;
+    public void setRepoIndexList(List<RepoIndex> repoIndexList) {
+        this.repoIndexList = repoIndexList;
     }
 }

@@ -72,10 +72,13 @@ public class PublishVerifyController {
 
             verifyService.execCmd("rm -rf " + tempDirPath);
 
-            RepoIndex repoIndex = publishPO.getRepoIndex();
-            if (repoIndex != null) {
-                if ("createrepo".equals(repoIndex.getIndexType())) {
-                    verifyService.execCmd("createrepo -d " + repoIndex.getRepoPath());
+            if (!CollectionUtils.isEmpty(publishPO.getRepoIndexList())) {
+                for (RepoIndex repoIndex : publishPO.getRepoIndexList()) {
+                    if (repoIndex != null) {
+                        if ("createrepo".equals(repoIndex.getIndexType())) {
+                            verifyService.execCmd("createrepo -d " + repoIndex.getRepoPath());
+                        }
+                    }
                 }
             }
         } catch (IOException | InterruptedException e) {
