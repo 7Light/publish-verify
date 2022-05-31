@@ -59,17 +59,12 @@ public class PublishVerifyController {
                     result.put("message", verifyMessage);
                     return result;
                 }
-            }
-
-            for (FilePO file : files) {
-                String fileName = file.getName();
                 File targetPathDir = new File(file.getTargetPath());
                 if (!targetPathDir.exists()) {
                     targetPathDir.mkdirs();
                 }
                 verifyService.execCmd("mv " + tempDirPath + "/" + fileName + " " + file.getTargetPath() + "/" + fileName);
             }
-
             verifyService.execCmd("rm -rf " + tempDirPath);
 
             if (!CollectionUtils.isEmpty(publishPO.getRepoIndexList())) {
