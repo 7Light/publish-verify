@@ -19,6 +19,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * main controller
+ */
 @RequestMapping(path = "/publish")
 @RestController
 public class PublishVerifyController {
@@ -26,13 +29,24 @@ public class PublishVerifyController {
     private FileDownloadService fileDownloadService;
     private VerifyService verifyService;
 
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public Map<String, Object> test() {
+    /**
+     * heartbeat
+     *
+     * @return heartbeat test
+     */
+    @RequestMapping(value = "/heartbeat", method = RequestMethod.GET)
+    public Map<String, Object> heartbeat() {
         Map<String, Object> result = new HashMap<>();
         result.put("result", "success");
         return result;
     }
 
+    /**
+     * publish
+     *
+     * @param publishPO publish model
+     * @return message
+     */
     @RequestMapping(value = "/publish", method = RequestMethod.POST)
     public Map<String, Object> publish(@RequestBody PublishPO publishPO) {
         Map<String, Object> result = new HashMap<>();
@@ -129,6 +143,4 @@ public class PublishVerifyController {
         }
         return "";
     }
-
-    //TODO 已经发布过的，跳过
 }

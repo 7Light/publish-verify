@@ -7,6 +7,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * verify service
+ */
 public class VerifyService {
     private static Logger log = Logger.getLogger(VerifyService.class);
     private String gpgKeyUrl;
@@ -27,23 +30,29 @@ public class VerifyService {
         this.rpmKey = publishPO.getRpmKey();
         this.fileKey = publishPO.getFileKey();
     }
-//    B4D3CB9B1F2AE4B930DDF04D2B15B06184D0E37B
-//    public static final String KEY_URL = "http://mirrors.163.com/centos/7/os/x86_64/RPM-GPG-KEY-CentOS-7";
-//    https://repo.openeuler.org/openEuler-22.03-LTS/source/RPM-GPG-KEY-openEuler
-//    public static final String KEY_FILE = "RPM-GPG-KEY-CentOS-7";
-//    public static final String RPM_KEY = "gpg-pubkey-f4a80eb5-53a7ff4b";
 
+    /**
+     * @param cmd cmd
+     * @return output
+     * @throws IOException
+     * @throws InterruptedException
+     */
     public String execCmd(String cmd) throws IOException, InterruptedException {
         log.info("cmd:" + cmd);
         Runtime runtime = Runtime.getRuntime();
         Process exec = runtime.exec(cmd);
         exec.waitFor();
         String output = getExecOutput(exec);
-        // TODO log.debug
         log.info("output:" + output);
         return output;
     }
 
+    /**
+     * verify rpm files
+     *
+     * @param filePath rpm file path
+     * @return success
+     */
     public boolean rpmVerify(String filePath) {
         try {
             if (!execCmd("rpm -q gpg-pubkey-*").contains(rpmKey)) {
@@ -58,6 +67,13 @@ public class VerifyService {
         return false;
     }
 
+    /**
+     * verify sha256
+     *
+     * @param filePath file path
+     * @param sha256   sha256
+     * @return
+     */
     public boolean checksum256Verify(String filePath, String sha256) {
         try {
             return execCmd("sha256sum " + filePath).contains(sha256);
@@ -67,6 +83,12 @@ public class VerifyService {
         return false;
     }
 
+    /**
+     * verify asc file
+     *
+     * @param filePath asc file path
+     * @return success
+     */
     public boolean fileVerify(String filePath) {
         try {
             if (!execCmd("gpg -k | grep " + fileKey).contains(fileKey)) {
@@ -93,7 +115,7 @@ public class VerifyService {
                 sb.append(line);
             }
         } catch (IOException e) {
-//            log.error(e.getMessage());
+            log.error(e.getMessage());
         }
         return sb + "";
     }

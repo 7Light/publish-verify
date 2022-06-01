@@ -2,7 +2,9 @@ package com.huawei.publish.model;
 
 import java.util.List;
 
-
+/**
+ * publish main model
+ */
 public class PublishPO {
     private String gpgKeyUrl;
     private String keyFileName;
@@ -13,6 +15,7 @@ public class PublishPO {
     private String conflict = "skip";//skip/overwrite/error
     List<FilePO> files;
     private List<RepoIndex> repoIndexList;
+
     public String getGpgKeyUrl() {
         return gpgKeyUrl;
     }

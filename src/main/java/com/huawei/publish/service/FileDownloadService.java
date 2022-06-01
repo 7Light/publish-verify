@@ -12,17 +12,15 @@ import java.io.InputStream;
 public class FileDownloadService {
 
     /**
-     *
-     * @param url      文件地址
-     * @param dir      存储目录
-     * @param fileName 存储文件名
-     * @return
+     * @param url      downloadUrl
+     * @param dir      save path
+     * @param fileName file name
      */
     public void downloadHttpUrl(String url, String dir, String fileName) {
         try {
-            File dirfile = new File(dir);
-            if (!dirfile.exists()) {
-                dirfile.mkdirs();
+            File dirFile = new File(dir);
+            if (!dirFile.exists()) {
+                dirFile.mkdirs();
             }
             HttpClient client = new HttpClient();
             GetMethod getMethod = new GetMethod(url);
@@ -30,15 +28,15 @@ public class FileDownloadService {
             InputStream is = getMethod.getResponseBodyAsStream();
 
             int cache = 10 * 1024;
-            FileOutputStream fileout = new FileOutputStream(dir + "/" + fileName);
+            FileOutputStream fileOut = new FileOutputStream(dir + "/" + fileName);
             byte[] buffer = new byte[cache];
             int ch = 0;
             while ((ch = is.read(buffer)) != -1) {
-                fileout.write(buffer, 0, ch);
+                fileOut.write(buffer, 0, ch);
             }
             is.close();
-            fileout.flush();
-            fileout.close();
+            fileOut.flush();
+            fileOut.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

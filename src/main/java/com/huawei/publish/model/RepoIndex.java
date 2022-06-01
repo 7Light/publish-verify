@@ -1,5 +1,8 @@
 package com.huawei.publish.model;
 
+/**
+ * repo index operation model
+ */
 public class RepoIndex {
     private String repoPath;
 

@@ -1,6 +1,9 @@
 package com.huawei.publish.model;
 
 
+/**
+ * file model
+ */
 public class FilePO {
     private String name;
     private String size;
