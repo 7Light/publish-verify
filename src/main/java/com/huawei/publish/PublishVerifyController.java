@@ -51,6 +51,11 @@ public class PublishVerifyController {
                 verifyService.execCmd("mkdir " + tempDirPath);
             }
             for (FilePO file : files) {
+                File targetFile = new File(file.getTargetPath() + "/" + file.getName());
+                boolean exists = targetFile.exists();
+                if ("skip".equals(publishPO.getConflict()) && exists) {
+                    continue;
+                }
                 String fileName = file.getName();
                 fileDownloadService.downloadHttpUrl(file.getUrl(), tempDirPath, fileName);
                 String verifyMessage = verify(tempDirPath, file, fileName);
@@ -118,10 +123,12 @@ public class PublishVerifyController {
                 return "file target path can not be empty.";
             }
             File targetFile = new File(file.getTargetPath() + "/" + file.getName());
-            if (targetFile.exists()) {
+            if ("error".equals(publishPO.getConflict()) && targetFile.exists()) {
                 return file.getName() + " already published.";
             }
         }
         return "";
     }
+
+    //TODO 已经发布过的，跳过
 }

@@ -9,6 +9,8 @@ public class PublishPO {
     private String rpmKey;
     private String fileKey;
     private String tempDir;
+
+    private String conflict = "skip";//skip/overwrite/error
     List<FilePO> files;
     private List<RepoIndex> repoIndexList;
     public String getGpgKeyUrl() {
@@ -65,5 +67,13 @@ public class PublishPO {
 
     public void setRepoIndexList(List<RepoIndex> repoIndexList) {
         this.repoIndexList = repoIndexList;
+    }
+
+    public String getConflict() {
+        return conflict;
+    }
+
+    public void setConflict(String conflict) {
+        this.conflict = conflict;
     }
 }
