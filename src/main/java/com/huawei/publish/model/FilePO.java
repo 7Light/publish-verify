@@ -11,6 +11,26 @@ public class FilePO {
     private String url;
     private String sha256;
 
+    private String publishResult;
+
+    private String verifyResult;
+
+    public String getPublishResult() {
+        return publishResult;
+    }
+
+    public void setPublishResult(String publishResult) {
+        this.publishResult = publishResult;
+    }
+
+    public String getVerifyResult() {
+        return verifyResult;
+    }
+
+    public void setVerifyResult(String verifyResult) {
+        this.verifyResult = verifyResult;
+    }
+
     public String getTargetPath() {
         return targetPath;
     }

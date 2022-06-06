@@ -2,6 +2,7 @@ package com.huawei.publish;
 
 import com.huawei.publish.model.FilePO;
 import com.huawei.publish.model.PublishPO;
+import com.huawei.publish.model.PublishResult;
 import com.huawei.publish.model.RepoIndex;
 import com.huawei.publish.service.FileDownloadService;
 import com.huawei.publish.service.VerifyService;
@@ -45,15 +46,16 @@ public class PublishVerifyController {
      * publish
      *
      * @param publishPO publish model
-     * @return message
+     * @return PublishResult PublishResult
      */
     @RequestMapping(value = "/publish", method = RequestMethod.POST)
-    public Map<String, Object> publish(@RequestBody PublishPO publishPO) {
-        Map<String, Object> result = new HashMap<>();
+    public PublishResult publish(@RequestBody PublishPO publishPO) {
+
+        PublishResult result = new PublishResult();
         String validate = validate(publishPO);
         if (!StringUtils.isEmpty(validate)) {
-            result.put("result", "fail");
-            result.put("message", "Validate failed, " + validate);
+            result.setResult("fail");
+            result.setMessage("Validate failed, " + validate);
             return result;
         }
         verifyService = new VerifyService(publishPO);
@@ -68,21 +70,28 @@ public class PublishVerifyController {
                 File targetFile = new File(file.getTargetPath() + "/" + file.getName());
                 boolean exists = targetFile.exists();
                 if ("skip".equals(publishPO.getConflict()) && exists) {
+                    file.setPublishResult("skip");
                     continue;
                 }
                 String fileName = file.getName();
                 fileDownloadService.downloadHttpUrl(file.getUrl(), tempDirPath, fileName);
                 String verifyMessage = verify(tempDirPath, file, fileName);
                 if (!StringUtils.isEmpty(verifyMessage)) {
-                    result.put("result", "fail");
-                    result.put("message", verifyMessage);
-                    return result;
+                    file.setVerifyResult(verifyMessage);
+                    continue;
+                } else {
+                    file.setVerifyResult("success");
                 }
                 File targetPathDir = new File(file.getTargetPath());
                 if (!targetPathDir.exists()) {
                     targetPathDir.mkdirs();
                 }
                 verifyService.execCmd("mv " + tempDirPath + "/" + fileName + " " + file.getTargetPath() + "/" + fileName);
+                if (exists) {
+                    file.setPublishResult("cover");
+                } else {
+                    file.setPublishResult("normal");
+                }
             }
             verifyService.execCmd("rm -rf " + tempDirPath);
 
@@ -96,11 +105,12 @@ public class PublishVerifyController {
                 }
             }
         } catch (IOException | InterruptedException e) {
-            result.put("result", "fail");
-            result.put("message", "publish failed, " + e.getMessage());
+            result.setResult("fail");
+            result.setMessage("publish failed, " + e.getMessage());
             return result;
         }
-        result.put("result", "success");
+        result.setFiles(files);
+        result.setResult("success");
         return result;
     }
 
